@@ -1,17 +1,21 @@
 name: Laravel
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  laravel-tests:
+
+  dusk-php-73:
     runs-on: ubuntu-latest
+    container: docker://zaherg/laravel-dusk:7.3
     steps:
     - uses: actions/checkout@v1
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
-    - name: Generate key
+      with:
+        fetch-depth: 1
+    - name: Prepare the environment
+      run: cp .env.travis .env
+    - name: Install Composer dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+    - name: Generate App Key
       run: php artisan key:generate
     - name: Create Database
       run: |
@@ -22,3 +26,11 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Upgrade chrome driver
+      run: php artisan dusk:chrome-driver
+    - name: Start Chrome Driver
+      run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+    - name: Run Laravel Server
+      run: php artisan serve > /dev/null 2>&1 &
+    - name: Run dusk tests
+      run: php artisan dusk
