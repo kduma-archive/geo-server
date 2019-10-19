@@ -6,31 +6,66 @@ jobs:
 
   dusk-php-73:
     runs-on: ubuntu-latest
-    container: docker://zaherg/laravel-dusk:7.3
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Prepare the environment
-      run: cp .env.travis .env
-    - name: Install Composer dependencies
-      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-    - name: Generate App Key
-      run: php artisan key:generate
-    - name: Create Database
+        
+        
+    - name: Installing System Dependencies
       run: |
-        mkdir -p database
+        curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+        sudo apt-get install -y build-essential debconf-utils screen nodejs mysql-server google-chrome-stable
+        sudo apt-get install -y unzip xvfb autogen autoconf libtool pkg-config nasm
+        sudo mysql -uroot -proot -e "use mysql; update user set authentication_string=PASSWORD('calendar') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+        sudo mysql -u root -pcalendar -e 'create database calendar;'
+    
+    - name: PHP version
+      run: |
+        php -version
+        
+    - name: MySQL Version
+      run: |
+        mysql --version
+        
+    - name: Environment Setup
+      run: |
         touch database/database.sqlite
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
-    - name: Upgrade chrome driver
-      run: php artisan dusk:chrome-driver
-    - name: Start Chrome Driver
-      run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
-    - name: Run Laravel Server
-      run: php artisan serve > /dev/null 2>&1 &
-    - name: Run dusk tests
-      run: php artisan dusk
+        cp .env.travis .env
+        
+    - name: Installing Composer Dependencies
+      run: |
+        sudo composer self-update
+        composer install --no-interaction --prefer-dist --no-suggest
+        composer --version
+        
+    - name: Running Migrations
+      run: |
+        php artisan key:generate
+        php artisan migrate
+        php artisan passport:install
+        
+    - name: Generating build assets
+      run: |
+        sudo npm i -g npm
+#        sudo chown -R vsts:vsts ~/.npm
+#        sudo chown -R vsts:vsts ~/.config
+        npm install
+        npm run prod
+        node -v
+
+    - name: Starting Chrome and the Web Server
+      run: |
+        php artisan dusk:chrome-driver
+        ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+        php artisan serve --port=8901 &
+
+    - name: Running Unit Tests
+      run: |
+        vendor/bin/phpunit 
+#        --log-junit tests/Results/TEST-phpunit-junit.xml
+        
+    - name: Running Browser Tests
+      run: |
+        php artisan dusk 
+#        --log-junit tests/Results/TEST-dusk-junit.xml
