@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "530710617364341fcf834d17533a4d5d",
+    "content-hash": "05584e7ee42059bd9cc5665c2185d81b",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -763,6 +763,49 @@
             ],
             "description": "Highlight PHP code in terminal",
             "time": "2018-09-29T18:48:56+00:00"
+        },
+        {
+            "name": "kduma/eloquent-uuidable",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kduma-OSS/L5-eloquent-uuidable.git",
+                "reference": "ad0177f8bacfba0205a5c9e573840f74de761c3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kduma-OSS/L5-eloquent-uuidable/zipball/ad0177f8bacfba0205a5c9e573840f74de761c3d",
+                "reference": "ad0177f8bacfba0205a5c9e573840f74de761c3d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "ramsey/uuid": "^3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KDuma\\Eloquent\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Krystian Duma",
+                    "email": "git@krystian.duma.sh"
+                }
+            ],
+            "description": "Eases using and generating uuid's in Laravel Eloquent models.",
+            "keywords": [
+                "eloquent",
+                "guid",
+                "laravel",
+                "uuid"
+            ],
+            "time": "2018-11-19T19:56:32+00:00"
         },
         {
             "name": "laravel/framework",
