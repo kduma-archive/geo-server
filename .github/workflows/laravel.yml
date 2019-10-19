@@ -48,8 +48,6 @@ jobs:
     - name: Generating build assets
       run: |
         sudo npm i -g npm
-#        sudo chown -R vsts:vsts ~/.npm
-#        sudo chown -R vsts:vsts ~/.config
         npm install
         npm run prod
         node -v
@@ -63,9 +61,7 @@ jobs:
     - name: Running Unit Tests
       run: |
         vendor/bin/phpunit 
-#        --log-junit tests/Results/TEST-phpunit-junit.xml
         
     - name: Running Browser Tests
       run: |
         php artisan dusk 
-#        --log-junit tests/Results/TEST-dusk-junit.xml
