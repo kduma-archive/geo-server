@@ -19,6 +19,16 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/positions', function () {
+    return response(
+        json_encode(\App\Position::latest('time')->get()->toArray(), JSON_PRETTY_PRINT),
+        200, 
+        [
+            'Content-Type' => 'Text/Plain'
+        ]
+    );
+});
+
 Route::get('/incoming_data', function () {
     return response(
         json_encode(\App\IncomingData::all(['frame', 'created_at'])->toArray(), JSON_PRETTY_PRINT),

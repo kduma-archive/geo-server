@@ -43,6 +43,15 @@ use KDuma\Eloquent\Uuidable;
 class Position extends Model
 {
     use Uuidable;
+    
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'time' => 'datetime',
+    ];
 
     public function Locator()
     {

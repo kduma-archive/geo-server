@@ -54,7 +54,7 @@ class ParseDataComingFromLocator implements ShouldQueue
             $position->longitude = $lon;
             $position->altitude = $altitude;
             $position->speed = $speed;
-            $position->time = new Carbon(substr($utctime, 0,4).'-'.substr($utctime, 4,2).'-'.substr($utctime, 6,2).' '.substr($utctime, 8,2).':'.substr($utctime, 10,2).':'.substr($utctime, 12,2), 'UTC');
+            $position->time = (new Carbon(substr($utctime, 0,4).'-'.substr($utctime, 4,2).'-'.substr($utctime, 6,2).' '.substr($utctime, 8,2).':'.substr($utctime, 10,2).':'.substr($utctime, 12,2), 'UTC'))->setTimeZone(config('app.timezone'));
             $position->save();
             return;
         }
@@ -68,7 +68,7 @@ class ParseDataComingFromLocator implements ShouldQueue
             $position->locator_id = $frame->locator_id;
             $position->latitude = $lat;
             $position->longitude = $lon;
-            $position->time = new Carbon($date.' '.$time, 'UTC');
+            $position->time = (new Carbon($date.' '.$time, 'UTC'))->setTimeZone(config('app.timezone'));
             $position->save();
             return;
         }
