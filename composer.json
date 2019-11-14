@@ -14,7 +14,8 @@
         "kduma/eloquent-uuidable": "^1.0",
         "laravel/framework": "^6.2",
         "laravel/passport": "^7.5",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+      "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

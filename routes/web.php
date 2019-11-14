@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/incoming_data', function () {
     return response(
-        json_encode(\App\IncomingData::all()->toArray(), JSON_PRETTY_PRINT),
+        json_encode(\App\IncomingData::all(['frame', 'created_at'])->toArray(), JSON_PRETTY_PRINT),
         200, 
         [
             'Content-Type' => 'Text/Plain'
