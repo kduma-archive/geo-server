@@ -4,6 +4,7 @@
 namespace App\Socket;
 
 
+use App\Events\ReceivedNewDataFromLocator;
 use App\IncomingData;
 use Illuminate\Support\Str;
 use Ratchet\MessageComponentInterface;
@@ -68,6 +69,7 @@ class LocatorsServer implements MessageComponentInterface
             $frame = new IncomingData;
             $frame->frame = $message;
             $client->locator->IncomingData()->save($frame);
+            event(new ReceivedNewDataFromLocator($frame));
             $this->log("Location frame received: {$message} ({$client->resourceId})");
             return;
         }

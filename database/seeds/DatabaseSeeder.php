@@ -17,5 +17,17 @@ class DatabaseSeeder extends Seeder
         $locator->ccid = '8901260862291107216f';
         $locator->imei = '869170031199350';
         $locator->save();
+        
+        if(env('IMPORT_DATA')) {
+            $data = json_decode(file_get_contents(env('IMPORT_DATA')), true);
+            
+            foreach($data as $entry) {
+                $row = new \App\IncomingData;
+                $row->frame = $entry['frame'];
+                $row->created_at = $entry['created_at'];
+                $row->updated_at = $entry['created_at'];
+                $locator->IncomingData()->save($row);
+            }
+        }
     }
 }

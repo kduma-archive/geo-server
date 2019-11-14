@@ -12,22 +12,29 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $frame
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $is_invalid
  * @property-read \App\Locator $Locator
+ * @property-read \App\Position $Position
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereFrame($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereIsInvalid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereLocatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\IncomingData whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class IncomingData extends Model
 {
-
     public function Locator()
     {
         return $this->belongsTo(Locator::class);
+    }
+    
+    public function Position()
+    {
+        return $this->hasOne(Position::class);
     }
 }
