@@ -11,6 +11,7 @@ use KDuma\Eloquent\Uuidable;
  * @property int $id
  * @property string $uuid
  * @property int $locator_id
+ * @property int $incoming_data_id
  * @property string|null $time
  * @property float|null $latitude
  * @property float|null $longitude
@@ -26,6 +27,7 @@ use KDuma\Eloquent\Uuidable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereGuid($guid)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereIncomingDataId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereLatitude($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereLocatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Position whereLongitude($value)

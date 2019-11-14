@@ -13,10 +13,14 @@ class CreatePositionsTable extends Migration
     public function up()
     {
         Schema::create('positions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             
             $table->uuid('uuid')->unique();
             $table->unsignedBigInteger('locator_id');
+            $table->foreign('locator_id')->references('id')->on('locators');
+            
+            $table->unsignedBigInteger('incoming_data_id');
+            $table->foreign('incoming_data_id')->references('id')->on('incoming_data');
             
             $table->dateTimeTz('time')->nullable();
             $table->decimal('latitude', 14, 10)->nullable();

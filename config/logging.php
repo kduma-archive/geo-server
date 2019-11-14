@@ -35,6 +35,13 @@ return [
     */
 
     'channels' => [
+        'locators' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/locators.log'),
+            'level' => 'debug',
+            'days' => 360,
+        ],
+        
         'stack' => [
             'driver' => 'stack',
             'channels' => ['daily'],

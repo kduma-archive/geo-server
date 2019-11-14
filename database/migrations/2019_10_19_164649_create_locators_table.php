@@ -17,8 +17,12 @@ class CreateLocatorsTable extends Migration
             
             $table->uuid('uuid')->unique();
             
-            $table->string('name');
-            $table->unsignedBigInteger('user_id');
+            $table->string('name')->nullable();
+            
+            $table->string('imei')->unique()->nullable();
+            $table->string('ccid')->unique()->nullable();
+            
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             
             $table->timestamps();
