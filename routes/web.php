@@ -39,6 +39,22 @@ Route::get('/position', function (\Illuminate\Http\Request $request) {
 HTML
     );
 });
+Route::get('/p', function (\Illuminate\Http\Request $request) {
+    $positions = \App\Position::latest('time')->with('Locator')->take(1)->get();
+    $pos = $positions->first();
+    
+    $pins = $positions->map(function (\App\Position $position) {
+        $pin_class = ($position->is_from_gsm ? 'pm2wtm' : 'pm2rdm');
+        return "{$position->longitude},{$position->latitude},{$pin_class}";
+    })->reverse()->implode('~');
+        
+    return response(<<<HTML
+<body style="text-align: center">
+<img style="max-width: 100%" width="650" src="https://static-maps.yandex.ru/1.x/?lang=en-US&ll={$pos->longitude},{$pos->latitude}&z=12&l=map,trf&size=650,450&pt={$pins}" alt="Yandex Map of {$pos->longitude},{$pos->latitude}">
+</body>
+HTML
+    );
+});
 
 Route::get('/incoming_data', function () {
     return response(
