@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/positions', function (\Illuminate\Http\Request $request) {
     return \App\Http\Resources\PositionResource::collection(\App\Position::latest('time')->with('Locator')->paginate(100));
-});
+})->middleware(\Spatie\Cors\Cors::class);
 Route::get('/position', function (\Illuminate\Http\Request $request) {
     $positions = \App\Position::latest('time')->with('Locator')->take(99)->get();
     $pos = $positions->first();
@@ -48,4 +48,4 @@ Route::get('/incoming_data', function () {
             'Content-Type' => 'Text/Plain'
         ]
     );
-});
+})->middleware(\Spatie\Cors\Cors::class);
