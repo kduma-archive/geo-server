@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/positions', function (\Illuminate\Http\Request $request) {
-    return \App\Http\Resources\PositionResource::collection(\App\Position::latest('time')->with('Locator')->paginate(100));
+    return \App\Http\Resources\PositionResource::collection(\App\Position::latest('time')->with('Device')->paginate(10000));
 });
 Route::get('/position', function (\Illuminate\Http\Request $request) {
     $positions = \App\Position::latest('time')->with('Locator')->take(99)->get();
