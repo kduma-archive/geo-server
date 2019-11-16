@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\IncomingData;
+use App\DataFrame;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,21 +11,21 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReceivedNewDataFromLocator
+class ReceivedNewFrameFromDevice
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     
     /**
-     * @var IncomingData
+     * @var DataFrame
      */
     private $incomingData;
 
     /**
      * Create a new event instance.
      *
-     * @param IncomingData $incomingData
+     * @param DataFrame $incomingData
      */
-    public function __construct(IncomingData $incomingData)
+    public function __construct(DataFrame $incomingData)
     {
         $this->incomingData = $incomingData;
     }
@@ -41,9 +41,9 @@ class ReceivedNewDataFromLocator
     }
 
     /**
-     * @return IncomingData
+     * @return DataFrame
      */
-    public function getIncomingData(): IncomingData
+    public function getIncomingData(): DataFrame
     {
         return $this->incomingData;
     }

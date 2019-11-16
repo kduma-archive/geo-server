@@ -19,9 +19,9 @@ class PositionResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'timestamp' => $this->time,
-            'location_device' => $this->whenLoaded('Locator', [
-                'uuid' => $this->Locator->uuid,
-                'name' => $this->Locator->name,
+            'location_device' => $this->whenLoaded('Device', [
+                'uuid' => $this->Device->uuid,
+                'name' => $this->Device->name,
             ]),
             'latitude' => (float) $this->latitude,
             'longitude' => (float) $this->longitude,

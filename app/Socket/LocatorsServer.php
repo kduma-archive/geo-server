@@ -4,8 +4,8 @@
 namespace App\Socket;
 
 
-use App\Events\ReceivedNewDataFromLocator;
-use App\IncomingData;
+use App\Events\ReceivedNewFrameFromDevice;
+use App\DataFrame;
 use Illuminate\Support\Str;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -52,7 +52,7 @@ class LocatorsServer implements MessageComponentInterface
                     return;
                 }
 
-                $this->log("Successful authorization with token={$token} - {$client->locator->name}! ({$client->resourceId})");
+                $this->log("Successful authorization with token={$token} - {$client->device->name}! ({$client->resourceId})");
                 return;
             } 
             
@@ -66,10 +66,10 @@ class LocatorsServer implements MessageComponentInterface
         if(!$message) return;
         
         if(Str::startsWith($message, '<') && Str::contains($message, '|') && Str::endsWith($message, '>')) {
-            $frame = new IncomingData;
+            $frame = new DataFrame;
             $frame->frame = $message;
-            $client->locator->IncomingData()->save($frame);
-            event(new ReceivedNewDataFromLocator($frame));
+            $client->device->DataFrames()->save($frame);
+            event(new ReceivedNewFrameFromDevice($frame));
             $this->log("Location frame received: {$message} ({$client->resourceId})");
             return;
         }

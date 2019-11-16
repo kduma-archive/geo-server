@@ -2,14 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\ReceivedNewDataFromLocator;
+use App\Events\ReceivedNewFrameFromDevice;
 use App\Position;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-class ParseDataComingFromLocator implements ShouldQueue
+class ParseIncomingFrameFromDevice implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -26,11 +26,11 @@ class ParseDataComingFromLocator implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param ReceivedNewDataFromLocator $event
+     * @param ReceivedNewFrameFromDevice $event
      * @return void
      * @throws \Exception
      */
-    public function handle(ReceivedNewDataFromLocator $event)
+    public function handle(ReceivedNewFrameFromDevice $event)
     {
         $frame = $event->getIncomingData();
         
@@ -45,11 +45,11 @@ class ParseDataComingFromLocator implements ShouldQueue
 
         [$mode, $fix, $utctime, $lat, $lon, $altitude, $speed,,,,,,,$sat_in_sight, $sat_in_use] = explode(',', $gps);
 
-        if($mode = 1 && $fix == 1){
+        if($mode == 1 && $fix == 1){
             $position = new Position;
             $position->is_from_gsm = false;
-            $position->incoming_data_id = $frame->id;
-            $position->locator_id = $frame->locator_id;
+            $position->data_frame_id = $frame->id;
+            $position->device_id = $frame->device_id;
             $position->latitude = $lat;
             $position->longitude = $lon;
             $position->altitude = $altitude;
@@ -59,13 +59,13 @@ class ParseDataComingFromLocator implements ShouldQueue
             return;
         }
 
-        [$locationcode, $lon, $lat, $date, $time] = explode(',', $gsm);
+        [$code, $lon, $lat, $date, $time] = explode(',', $gsm);
 
-        if($locationcode == 0){
+        if($code == 0){
             $position = new Position;
             $position->is_from_gsm = true;
-            $position->incoming_data_id = $frame->id;
-            $position->locator_id = $frame->locator_id;
+            $position->data_frame_id = $frame->id;
+            $position->device_id = $frame->device_id;
             $position->latitude = $lat;
             $position->longitude = $lon;
             $position->time = (new Carbon($date.' '.$time, 'UTC'))->setTimeZone(config('app.timezone'));

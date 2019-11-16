@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Events\ReceivedNewDataFromLocator;
-use App\IncomingData;
+use App\Events\ReceivedNewFrameFromDevice;
+use App\DataFrame;
 use App\Position;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -43,10 +43,10 @@ class BackProcessPreviuosIncomingData extends Command
      */
     public function handle()
     {
-        $frames = IncomingData::whereIsInvalid(false)->whereDoesntHave('position')->get();
+        $frames = DataFrame::whereIsInvalid(false)->whereDoesntHave('position')->get();
 
         foreach($frames as $frame){
-            event(new ReceivedNewDataFromLocator($frame));
+            event(new ReceivedNewFrameFromDevice($frame));
         }
     }
 }

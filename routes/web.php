@@ -58,7 +58,7 @@ HTML
 
 Route::get('/incoming_data', function () {
     return response(
-        json_encode(\App\IncomingData::all(['frame', 'created_at'])->toArray(), JSON_PRETTY_PRINT),
+        json_encode(\App\DataFrame::all(['frame', 'created_at'])->toArray(), JSON_PRETTY_PRINT),
         200, 
         [
             'Content-Type' => 'Text/Plain'

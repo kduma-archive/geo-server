@@ -4,11 +4,11 @@
 namespace App\Socket;
 
 
-use App\Locator;
+use App\Device;
 use Ratchet\ConnectionInterface;
 
 /**
- * @property null|Locator locator
+ * @property null|Device device
  * @property null|boolean uuid
  * @property boolean is_authorized
  * @property mixed resourceId
@@ -27,7 +27,7 @@ class Client
             case 'resourceId': return $this->connection->resourceId;
             case 'is_authorized': return $this->locator_uuid !== null;
             case 'uuid': return $this->locator_uuid;
-            case 'locator': return $this->locator_uuid ? Locator::whereUuid($this->locator_uuid)->first() : null;
+            case 'device': return $this->locator_uuid ? Device::whereUuid($this->locator_uuid)->first() : null;
         }
     }
 
@@ -76,7 +76,7 @@ class Client
      */
     public function authorize(string $token)
     {
-        $locator = Locator::whereCcid($token)->first();
+        $locator = Device::whereCcid($token)->first();
         
         if($locator === null)
             return false;
