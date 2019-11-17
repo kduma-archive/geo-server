@@ -23,7 +23,7 @@ Route::get('/positions', function (\Illuminate\Http\Request $request) {
     return \App\Http\Resources\PositionResource::collection(\App\Position::latest('time')->with('Device')->paginate(10000));
 });
 Route::get('/position', function (\Illuminate\Http\Request $request) {
-    $positions = \App\Position::latest('time')->with('Locator')->take(99)->get();
+    $positions = \App\Position::latest('time')->with('Device')->take(99)->get();
     $pos = $positions->first();
     
     $counter = 1;
@@ -40,7 +40,7 @@ HTML
     );
 });
 Route::get('/p', function (\Illuminate\Http\Request $request) {
-    $positions = \App\Position::latest('time')->with('Locator')->take(1)->get();
+    $positions = \App\Position::latest('time')->with('Device')->take(1)->get();
     $pos = $positions->first();
     
     $pins = $positions->map(function (\App\Position $position) {
